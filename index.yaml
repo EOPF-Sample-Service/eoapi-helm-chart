@@ -1,0 +1,54 @@
+apiVersion: v1
+entries:
+  eoapi:
+  - apiVersion: v2
+    appVersion: 0.4.0
+    created: "2025-02-05T08:52:28.027691148Z"
+    dependencies:
+    - condition: postgrescluster.enabled
+      name: postgrescluster
+      repository: https://devseed.com/eoapi-k8s/
+      version: 5.5.3
+    description: Create a full Earth Observation API with Metadata, Raster and Vector
+      services
+    digest: afd9d751da73fa4de978f91b508215535739f1a26a700797cf6472d4a0757193
+    kubeVersion: '>=1.23.0-0'
+    name: eoapi
+    type: application
+    urls:
+    - https://github.com/EOPF-Sample-Service/eoapi-helm-chart/releases/download/eoapi-0.5.2/eoapi-0.5.2.tgz
+    version: 0.5.2
+  eoapi-support:
+  - apiVersion: v2
+    appVersion: 0.1.7
+    created: "2025-02-05T08:52:28.137098195Z"
+    dependencies:
+    - name: metrics-server
+      repository: https://charts.bitnami.com/bitnami
+      version: 7.2.8
+    - name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 25.3.1
+    - name: prometheus-adapter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 4.7.1
+    - name: grafana
+      repository: https://grafana.github.io/helm-charts
+      version: 7.3.3
+    digest: 1db689e161fc585395c8301ebd06198b51601cde67affaa65c5779dcfa4e765c
+    name: eoapi-support
+    urls:
+    - https://github.com/EOPF-Sample-Service/eoapi-helm-chart/releases/download/eoapi-support-0.1.7/eoapi-support-0.1.7.tgz
+    version: 0.1.7
+  postgrescluster:
+  - apiVersion: v2
+    appVersion: 5.5.3
+    created: "2025-02-05T08:52:28.248802161Z"
+    description: A Helm chart for eoapi database dep for k8s
+    digest: f1a1e349470f57b6f58e4df5b59dbbfb580721fe522a960a87fe7acaaef64dd1
+    name: postgrescluster
+    type: application
+    urls:
+    - https://github.com/EOPF-Sample-Service/eoapi-helm-chart/releases/download/postgrescluster-5.5.3/postgrescluster-5.5.3.tgz
+    version: 5.5.3
+generated: "2025-02-05T08:52:28.248808954Z"
