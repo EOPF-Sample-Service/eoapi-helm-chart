@@ -1,0 +1,27 @@
+{{- if (.Values.browser.enabled) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: browser-{{ .Release.Name }}
+spec:
+  replicas: {{.Values.browser.replicaCount}}
+  selector:
+    matchLabels:
+      app: browser-{{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: browser-{{ .Release.Name }}
+    spec:
+      containers:
+        - name: browser
+          image: {{ .Values.browser.image.name }}:{{ .Values.browser.image.tag }}
+          ports:
+          - containerPort: 8080
+          envFrom:
+          # NOTE: there's no reason we need to use a `ConfigMap` or `Secret` here to get os env vars into the pod.
+          # we could just template them out here immediately with `value: $_` but this allows us
+          # to store them in k8s intermediately and change them and then bounce deploys if needed
+          - configMapRef:
+              name: browser-envvar-configmap-{{ $.Release.Name }}
+{{- end }}

@@ -1,0 +1,22 @@
+
+ingress:
+  enabled: true
+  className: "nginx"
+  host: ""
+  tls:
+    enabled: false
+    secretName: eoapi-tls
+    certManager: false
+    certManagerIssuer: letsencrypt-prod
+    certManagerEmail: ""
+
+browser:
+  enabled: true
+  image:
+    name: ghcr.io/radiantearth/stac-browser
+    tag: 3.3.3
+  replicaCount: 1
+  settings:
+    envVars:
+      SB_catalogUrl: "/stac"
+      SB_detectLocaleFromBrowser: "false"

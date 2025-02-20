@@ -1,0 +1,33 @@
+{{- if (and (.Values.ingress.enabled) (eq .Values.ingress.className "nginx")) }}
+{{- if (.Values.browser.enabled) }}
+# We need a separate ingress because browser does not play well with nginx rewrite_path directive
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-browser-ingress-shared-{{ $.Release.Name }}
+  labels:
+    app: nginxsharedingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    # enable-access-log is required for nginx to dump metrics about path rewrites for prometheus to scrape
+    nginx.ingress.kubernetes.io/enable-access-log: "true"
+    {{- if (and (.Values.ingress.tls.enabled) (.Values.ingress.tls.certManager)) }}
+    cert-manager.io/issuer: {{ .Values.ingress.tls.certManagerIssuer }}
+    {{- end }}  
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+    - http:
+        paths:
+        - pathType: Prefix
+          path: /
+          backend:
+            service:
+              name: browser
+              port:
+                number: {{ $.Values.service.port }}
+{{/* END: if (.Values.browser.enabled) */}}
+{{- end }}
+{{/* END: if (and (.Values.ingress.enabled) (eq .Values.ingress.className "nginx")) */}}
+{{- end }}

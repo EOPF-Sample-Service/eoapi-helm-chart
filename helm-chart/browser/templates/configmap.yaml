@@ -1,0 +1,10 @@
+{{- if (.Values.browser.enabled) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: browser-envvar-configmap-{{ $.Release.Name }}
+data:
+  {{- range $envKey, $envValue := index .Values.browser.settings.envVars }}
+  {{ $envKey }}: {{ $envValue | quote }}
+  {{- end }}
+{{- end }}
