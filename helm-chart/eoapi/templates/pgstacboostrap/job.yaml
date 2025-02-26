@@ -7,7 +7,6 @@ metadata:
   labels:
     app: {{ include "eoapi.pgstacHostName" . | nindent 10 }}
 spec:
-  ttlSecondsAfterFinished: 100
   template:
     metadata:
       labels:
