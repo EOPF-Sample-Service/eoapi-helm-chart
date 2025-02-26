@@ -3,6 +3,17 @@ entries:
   browser:
   - apiVersion: v2
     appVersion: 3.3.3
+    created: "2025-02-26T14:16:33.998013828Z"
+    description: STAC Browser for eoAPI
+    digest: ec8b471e6947e475a32105e803833976b0b666da2d42004567fa83fffa13b338
+    kubeVersion: '>=1.23.0-0'
+    name: browser
+    type: application
+    urls:
+    - https://github.com/EOPF-Sample-Service/eoapi-helm-chart/releases/download/browser-0.2.0/browser-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 3.3.3
     created: "2025-02-20T07:56:52.087185106Z"
     description: STAC Browser for eoAPI
     digest: 4daccceb32423989c133e36438994aaff060304b4c3fa68edd48bc1d89bf8278
@@ -97,4 +108,4 @@ entries:
     urls:
     - https://github.com/EOPF-Sample-Service/eoapi-helm-chart/releases/download/postgrescluster-5.5.3/postgrescluster-5.5.3.tgz
     version: 5.5.3
-generated: "2025-02-20T12:56:03.578445603Z"
+generated: "2025-02-26T14:16:33.998028295Z"
