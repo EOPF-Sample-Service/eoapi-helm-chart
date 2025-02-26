@@ -10,6 +10,9 @@ ingress:
     certManagerIssuer: letsencrypt-prod
     certManagerEmail: ""
 
+service:
+  port: 8080
+
 browser:
   enabled: true
   image:
