@@ -1,0 +1,43 @@
+{{- if .Values.collectionSetup.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: initdb-sql-config-{{ $.Release.Name }}
+data:
+  update-db-settings.sql: |
+    {{- range $path, $bytes := $.Files.Glob "fixtures/*.sql"  -}}
+    {{ $.Files.Get $path | nindent 4 }}
+    {{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: initdb-json-config-{{ $.Release.Name }}
+data:
+  {{- range $path, $bytes := $.Files.Glob "fixtures/*.json"  -}}
+  {{- base $path | nindent 2 -}}: | {{- $.Files.Get $path | nindent 4 -}}
+  {{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: initdb-sh-config-{{ $.Release.Name }}
+data:
+  apt-and-pip-install.sh: |
+    #!/bin/bash
+    apt update -y && apt install python3 python3-pip -y
+    pip install pypgstac[psycopg]
+  run-collection-setup.sh: |
+    #!/bin/bash
+    bash /opt/initdb/apt-and-pip-install.sh    
+    
+    # make sure crunchydata postgresql operator has seeded our secrets and we're ready to go
+    pypgstac pgready --dsn $PGADMIN_URI
+    # pypgstac load collections /opt/initdb/json-data/collections.json --dsn $PGADMIN_URI --method upsert
+    psql $PGADMIN_URI -f /opt/initdb/sql-data/update-db-settings.sql
+    echo "DONE LOADING!!!!!!"
+
+    # let the k8's pod know we've completed successfully
+    exit 0
+{{- end }}
