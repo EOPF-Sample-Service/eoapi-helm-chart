@@ -1,4 +1,4 @@
-{{- if .Values.collectionSetup.enabled }}
+{{- if .Values.load_collections.enabled }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -28,7 +28,7 @@ data:
     #!/bin/bash
     apt update -y && apt install python3 python3-pip -y
     pip install pypgstac[psycopg]
-  run-collection-setup.sh: |
+  run-load-collections.sh: |
     #!/bin/bash
     bash /opt/initdb/apt-and-pip-install.sh    
     

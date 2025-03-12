@@ -1,28 +1,28 @@
-{{- if .Values.collectionSetup.enabled }}
+{{- if .Values.load_collections.enabled }}
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: collection-setup-{{ $.Release.Name }}
+  name: load-collections-{{ $.Release.Name }}
   labels:
-    app: collection-setup-{{ $.Release.Name }}
+    app: load-collections-{{ $.Release.Name }}
 spec:
   template:
     metadata:
       labels:
-        app: collection-setup-{{ $.Release.Name }}
+        app: load-collections-{{ $.Release.Name }}
     spec:
       restartPolicy: Never
       containers:
-        - name: collectionsetup
-          image: {{ .Values.collectionSetup.image.name }}:{{ .Values.collectionSetup.image.tag }}
-          command: {{- toYaml .Values.collectionSetup.command | nindent 12 }}
+        - name: load-collections
+          image: {{ .Values.common.image.name }}:{{ .Values.common.image.tag }}
+          command: {{- toYaml .Values.load_collections.command | nindent 12 }}
           args:
-            {{- toYaml .Values.collectionSetup.args | nindent 12 }}
+            {{- toYaml .Values.load_collections.args | nindent 12 }}
           ports:
             - containerPort: 5432
           resources:
-            {{- toYaml .Values.collectionSetup.settings.resources | nindent 12 }}
+            {{- toYaml .Values.common.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /opt/initdb/sql-data
               name: initdb-sql-volume-{{ $.Release.Name }}
@@ -34,7 +34,7 @@ spec:
             - name: PGADMIN_URI
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.collectionSetup.settings.eoapiReleaseName }}-pguser-postgres
+                  name: {{ .Values.common.eoapiReleaseName }}-pguser-postgres
                   key: uri
       volumes:
         - name: initdb-sql-volume-{{ $.Release.Name }}
@@ -46,13 +46,81 @@ spec:
         - name: initdb-sh-volume-{{ $.Release.Name }}
           configMap:
             name: initdb-sh-config-{{ $.Release.Name }}
-      {{- with .Values.collectionSetup.settings.affinity }}
+      {{- with .Values.common.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.collectionSetup.settings.tolerations }}
+      {{- with .Values.common.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
   backoffLimit: 1
+{{- end }}
+{{- if .Values.update_collection_extents.enabled }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: update-collection-extents-{{ $.Release.Name }}
+  labels:
+    app: update-collection-extents-{{ $.Release.Name }}
+spec:
+  # 30 minutes past the hour, every 12 hours
+  schedule: "30 */12 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: update-collection-extents
+              image: {{ .Values.common.image.name }}:{{ .Values.common.image.tag }}
+              imagePullPolicy: IfNotPresent
+              command: {{- toYaml .Values.update_collection_extents.command | nindent 16 }}
+              args:
+                {{- toYaml .Values.update_collection_extents.args | nindent 16 }}
+              ports:
+                - containerPort: 5432
+              resources:
+                {{- toYaml .Values.common.resources | nindent 16 }}
+              env:
+                - name: PGADMIN_URI
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.common.eoapiReleaseName }}-pguser-postgres
+                      key: uri              
+          restartPolicy: OnFailure
+{{- end }}
+{{- if .Values.run_queued_queries.enabled }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: run-queued-queries-{{ $.Release.Name }}
+  labels:
+    app: run-queued-queries-{{ $.Release.Name }}
+spec:
+  # every hour
+  schedule: "0 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: run-queued-queries
+              image: {{ .Values.common.image.name }}:{{ .Values.common.image.tag }}
+              imagePullPolicy: IfNotPresent
+              command: {{- toYaml .Values.run_queued_queries.command | nindent 16 }}
+              args:
+                {{- toYaml .Values.run_queued_queries.args | nindent 16 }}
+              ports:
+                - containerPort: 5432
+              resources:
+                {{- toYaml .Values.common.resources | nindent 16 }}
+              env:
+                - name: PGADMIN_URI
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.common.eoapiReleaseName }}-pguser-postgres
+                      key: uri              
+          restartPolicy: OnFailure
 {{- end }}

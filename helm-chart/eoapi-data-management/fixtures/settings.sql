@@ -15,6 +15,6 @@ INSERT INTO pgstac.pgstac_settings (name, value)
         ('queue_timeout',            '10 minutes'),
         ('format_cache',             'false'),
         ('readonly',                 'false'),
-        ('use_queue',                'false')
+        ('use_queue',                'true')
     ON CONFLICT ON CONSTRAINT pgstac_settings_pkey DO UPDATE SET value = excluded.value;
 COMMIT;

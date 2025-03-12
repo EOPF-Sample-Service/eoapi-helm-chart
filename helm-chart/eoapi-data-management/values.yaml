@@ -1,18 +1,36 @@
-collectionSetup:
-  enabled: true
+
+common:
   image:
     name: ghcr.io/stac-utils/pgstac
     tag: v0.9.2
+  eoapiReleaseName: eoapi
+  resources:
+    requests:
+      cpu: "512m"
+      memory: "1024Mi"
+    limits:
+      cpu: "512m"
+      memory: "1024Mi"
+
+load_collections:
+  enabled: true
   command:
     - "sh"
   args:
-    - "/opt/initdb/run-collection-setup.sh"
-  settings:
-    eoapiReleaseName: eoapi
-    resources:
-      requests:
-        cpu: "512m"
-        memory: "1024Mi"
-      limits:
-        cpu: "512m"
-        memory: "1024Mi"
+    - "/opt/initdb/run-load-collections.sh"
+
+update_collection_extents:
+  enabled: true
+  command:
+    - "sh"
+  args:
+    - "-c"
+    - "psql $PGADMIN_URI -c 'SET search_path = pgstac,public; SELECT update_collection_extents();'"
+
+run_queued_queries:
+  enabled: true
+  command:
+    - "sh"
+  args:
+    - "-c"
+    - "psql $PGADMIN_URI -c 'SET search_path = pgstac,public; CALL run_queued_queries();'"
