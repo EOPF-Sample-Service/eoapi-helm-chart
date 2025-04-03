@@ -21,16 +21,20 @@ load_collections:
 
 update_collection_extents:
   enabled: true
+  # 30 minutes past the hour, every 12 hours
+  schedule: "30 */12 * * *"
   command:
     - "sh"
   args:
     - "-c"
-    - "psql $PGADMIN_URI -c 'SET search_path = pgstac,public; SELECT update_collection_extents();'"
+    - "psql $PGADMIN_URI -f /opt/sql/update-collection-extent.sql"
 
 run_queued_queries:
   enabled: true
+  # every hour
+  schedule: "0 * * * *"
   command:
     - "sh"
   args:
     - "-c"
-    - "psql $PGADMIN_URI -c 'SET search_path = pgstac,public; CALL run_queued_queries();'"
+    - "psql $PGADMIN_URI -f /opt/sql/run-queued-queries.sql"

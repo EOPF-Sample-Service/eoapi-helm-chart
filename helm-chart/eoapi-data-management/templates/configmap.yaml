@@ -41,3 +41,25 @@ data:
     # let the k8's pod know we've completed successfully
     exit 0
 {{- end }}
+{{- if .Values.update_collection_extents.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: update-collection-extents-config-{{ $.Release.Name }}
+data:
+  update-collection-extent.sql: |
+    SET search_path = pgstac,public;
+    SELECT update_collection_extents();
+{{- end }}
+{{- if .Values.run_queued_queries.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: run-queued-queries-config-{{ $.Release.Name }}
+data:
+  run-queued-queries.sql: |
+    SET search_path = pgstac,public;
+    CALL run_queued_queries();
+{{- end }}

@@ -65,8 +65,7 @@ metadata:
   labels:
     app: update-collection-extents-{{ $.Release.Name }}
 spec:
-  # 30 minutes past the hour, every 12 hours
-  schedule: "30 */12 * * *"
+  schedule: {{ .Values.update_collection_extents.schedule | quote  }}
   jobTemplate:
     spec:
       template:
@@ -82,12 +81,19 @@ spec:
                 - containerPort: 5432
               resources:
                 {{- toYaml .Values.common.resources | nindent 16 }}
+              volumeMounts:
+                - mountPath: /opt/sql
+                  name: update-collection-extents-sql-volume-{{ $.Release.Name }}                
               env:
                 - name: PGADMIN_URI
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.common.eoapiReleaseName }}-pguser-postgres
                       key: uri              
+          volumes:
+            - name: update-collection-extents-sql-volume-{{ $.Release.Name }}
+              configMap:
+                name: update-collection-extents-config-{{ $.Release.Name }}          
           restartPolicy: OnFailure
 {{- end }}
 {{- if .Values.run_queued_queries.enabled }}
@@ -99,8 +105,7 @@ metadata:
   labels:
     app: run-queued-queries-{{ $.Release.Name }}
 spec:
-  # every hour
-  schedule: "0 * * * *"
+  schedule: {{ .Values.run_queued_queries.schedule | quote  }}
   jobTemplate:
     spec:
       template:
@@ -116,11 +121,18 @@ spec:
                 - containerPort: 5432
               resources:
                 {{- toYaml .Values.common.resources | nindent 16 }}
+              volumeMounts:
+                - mountPath: /opt/sql
+                  name: run-queued-queries-sql-volume-{{ $.Release.Name }}                   
               env:
                 - name: PGADMIN_URI
                   valueFrom:
                     secretKeyRef:
                       name: {{ .Values.common.eoapiReleaseName }}-pguser-postgres
-                      key: uri              
+                      key: uri
+          volumes:
+            - name: run-queued-queries-sql-volume-{{ $.Release.Name }}
+              configMap:
+                name: run-queued-queries-config-{{ $.Release.Name }}                       
           restartPolicy: OnFailure
 {{- end }}
