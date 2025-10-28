@@ -14,5 +14,6 @@ UPDATE collections set partition_trunc='month' WHERE id='sentinel-3-olci-l2-lfr'
 UPDATE collections set partition_trunc='month' WHERE id='sentinel-3-olci-l2-lrr';
 UPDATE collections set partition_trunc='month' WHERE id='sentinel-3-slstr-l1-rbt';
 UPDATE collections set partition_trunc='month' WHERE id='sentinel-3-slstr-l2-lst';
+UPDATE collections set partition_trunc='month' WHERE id='sentinel-3-slstr-l2-frp';
 
 COMMIT;
