@@ -26,5 +26,6 @@ appVersion: "0.4.0"
 dependencies:
   - name: postgrescluster
     version: 5.5.4
-    repository: "https://eopf-sample-service.github.io/eoapi-helm-chart/"
+    #repository: "https://eopf-sample-service.github.io/eoapi-helm-chart/"
+    repository: "file://../postgrescluster"
     condition: postgrescluster.enabled
