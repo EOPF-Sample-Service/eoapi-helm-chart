@@ -26,6 +26,23 @@ entries:
   eoapi:
   - apiVersion: v2
     appVersion: 0.4.0
+    created: "2025-10-29T10:18:52.256382726Z"
+    dependencies:
+    - condition: postgrescluster.enabled
+      name: postgrescluster
+      repository: file://../postgrescluster
+      version: 5.5.4
+    description: Create a full Earth Observation API with Metadata, Raster and Vector
+      services
+    digest: ba364c14f6a3ef271090ba015793f027a7e71bb50a478ef8b3d63a57e018948c
+    kubeVersion: '>=1.23.0-0'
+    name: eoapi
+    type: application
+    urls:
+    - https://github.com/EOPF-Sample-Service/eoapi-helm-chart/releases/download/eoapi-0.5.6/eoapi-0.5.6.tgz
+    version: 0.5.6
+  - apiVersion: v2
+    appVersion: 0.4.0
     created: "2025-03-10T14:36:24.094586416Z"
     dependencies:
     - condition: postgrescluster.enabled
@@ -261,6 +278,16 @@ entries:
     version: 0.1.7
   postgrescluster:
   - apiVersion: v2
+    appVersion: 5.5.4
+    created: "2025-10-29T10:18:52.480775217Z"
+    description: A Helm chart for eoapi database dep for k8s
+    digest: 29b99bc4e3687b7619eff79dfeabd2c84c146e7436873f30c5c482ff5951a813
+    name: postgrescluster
+    type: application
+    urls:
+    - https://github.com/EOPF-Sample-Service/eoapi-helm-chart/releases/download/postgrescluster-5.5.4/postgrescluster-5.5.4.tgz
+    version: 5.5.4
+  - apiVersion: v2
     appVersion: 5.5.3
     created: "2025-02-05T08:52:28.248802161Z"
     description: A Helm chart for eoapi database dep for k8s
@@ -270,4 +297,4 @@ entries:
     urls:
     - https://github.com/EOPF-Sample-Service/eoapi-helm-chart/releases/download/postgrescluster-5.5.3/postgrescluster-5.5.3.tgz
     version: 5.5.3
-generated: "2025-10-28T13:13:43.807370189Z"
+generated: "2025-10-29T10:18:52.480820842Z"
