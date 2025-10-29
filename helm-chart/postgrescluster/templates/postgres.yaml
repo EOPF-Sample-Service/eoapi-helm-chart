@@ -116,6 +116,9 @@ spec:
         azure:
           container: {{ .Values.azure.container | quote }}
       {{- else if .Values.nfsCustom }}
+      global:
+        repo1-retention-full-type: count
+        repo1-retention-full: {{ default "2" .Values.backupRetentionFullCount | quote }}
       repos:
       - name: repo1
         volume:
@@ -129,6 +132,9 @@ spec:
               requests:
                 storage: {{ default "1Gi" .Values.backupsSize | quote }}
       {{- else }}
+      global:
+        repo1-retention-full-type: count
+        repo1-retention-full: {{ default "2" .Values.backupRetentionFullCount | quote }}
       repos:
       - name: repo1
         volume:
