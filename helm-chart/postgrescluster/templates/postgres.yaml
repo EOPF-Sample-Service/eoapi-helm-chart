@@ -121,6 +121,9 @@ spec:
         repo1-retention-full: {{ default "2" .Values.backupRetentionFullCount | quote }}
       repos:
       - name: repo1
+        schedules:
+          full: {{ default "0 1 * * 0" .Values.backupScheduleFull | quote }}
+          differential: {{ default "0 1 * * 1-6" .Values.backupScheduleDifferential | quote }}
         volume:
           volumeClaimSpec:
             {{- if .Values.backupsStorageClassName }}
@@ -137,6 +140,9 @@ spec:
         repo1-retention-full: {{ default "2" .Values.backupRetentionFullCount | quote }}
       repos:
       - name: repo1
+        schedules:
+          full: {{ default "0 1 * * 0" .Values.backupScheduleFull | quote }}
+          differential: {{ default "0 1 * * 1-6" .Values.backupScheduleDifferential | quote }}      
         volume:
           volumeClaimSpec:
             {{- if .Values.backupsStorageClassName }}
