@@ -30,11 +30,11 @@ data:
     pip install pypgstac[psycopg]
   run-load-collections.sh: |
     #!/bin/bash
-    bash /opt/initdb/apt-and-pip-install.sh    
+    # bash /opt/initdb/apt-and-pip-install.sh    
     
     # make sure crunchydata postgresql operator has seeded our secrets and we're ready to go
-    pypgstac pgready --dsn $PGADMIN_URI
-    pypgstac load collections /opt/initdb/json-data/collections.json --dsn $PGADMIN_URI --method upsert
+    # pypgstac pgready --dsn $PGADMIN_URI
+    # pypgstac load collections /opt/initdb/json-data/collections.json --dsn $PGADMIN_URI --method upsert
     psql $PGADMIN_URI -f /opt/initdb/sql-data/update-db-settings.sql
     echo "DONE LOADING!!!!!!"
 
