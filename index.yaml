@@ -146,6 +146,18 @@ entries:
   eoapi-data-management:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2026-09-11T09:13:09.886972724Z"
+    description: Data management operations for eoAPI services. Sets up collections,
+      partitioning and cron jobs
+    digest: 6ce1e308c0feff26a4bd431243f1e8f866b6cb48f3d2f3313d6a48acdde9ebb6
+    kubeVersion: '>=1.23.0-0'
+    name: eoapi-data-management
+    type: application
+    urls:
+    - https://github.com/EOPF-Sample-Service/eoapi-helm-chart/releases/download/eoapi-data-management-0.14.0/eoapi-data-management-0.14.0.tgz
+    version: 0.14.0
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2026-08-12T13:16:00.591395037Z"
     description: Data management operations for eoAPI services. Sets up collections,
       partitioning and cron jobs
@@ -365,4 +377,4 @@ entries:
     urls:
     - https://github.com/EOPF-Sample-Service/eoapi-helm-chart/releases/download/postgrescluster-5.5.3/postgrescluster-5.5.3.tgz
     version: 5.5.3
-generated: "2026-08-12T13:16:00.591502999Z"
+generated: "2026-09-11T09:13:09.887098264Z"
